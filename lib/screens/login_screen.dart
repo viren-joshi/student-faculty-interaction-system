@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:somaiya_project/constants.dart';
+import 'package:somaiya_project/screens/student/student_home_screen.dart';
 import 'package:somaiya_project/widgets/custom_text_field.dart';
 import 'package:somaiya_project/widgets/submit_button.dart';
 
@@ -75,7 +76,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 20.0),
-                      child: SubmitButton(onPressesCallback: () {}),
+                      child: SubmitButton(onPressesCallback: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const StudentHomeScreen(),
+                          ),
+                        );
+                      }),
                     ),
                   ],
                 ),

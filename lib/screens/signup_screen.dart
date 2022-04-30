@@ -177,7 +177,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                     child: const Text(
                       'Already have an Account ? Tap Here !',
-                      style: const TextStyle(color: kHyperlinkColor),
+                      style: TextStyle(color: kHyperlinkColor),
                       textAlign: TextAlign.center,
                     ),
                   )
