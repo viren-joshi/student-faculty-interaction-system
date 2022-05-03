@@ -13,47 +13,7 @@ class _FacultyHomeScreenState extends State<FacultyHomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        drawer: Drawer(
-          backgroundColor: const Color(0xCC680C25),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 25.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                ListTile(
-                  title: Text(
-                    'Home',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 25.0,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  title: Text(
-                    'Profile',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 25.0,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  title: Text(
-                    'Logout',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 25.0,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
+        drawer: FacultyDrawer(),
         appBar: AppBar(
           backgroundColor: Colors.white,
           iconTheme: const IconThemeData(color: kGray, size: 45.0),
@@ -91,10 +51,6 @@ class _FacultyHomeScreenState extends State<FacultyHomeScreen> {
                 },
                 itemCount: 10,
                 itemBuilder: (BuildContext context, int index) {
-                  bool isAnswered = false;
-                  if (index % 2 == 0) {
-                    isAnswered = true;
-                  }
                   return Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
@@ -114,37 +70,96 @@ class _FacultyHomeScreenState extends State<FacultyHomeScreen> {
                               'ABCD EFGH IKLSFJKJEHG HDKJGHRT HKJHJDGJKT KJDGKJRHT'),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 15.0, top: 10.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Icon(isAnswered ? Icons.schedule : Icons.done),
-                              GestureDetector(
-                                onTap: () {},
-                                child: Container(
-                                  decoration: const BoxDecoration(
-                                      color: kLightColor,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0))),
-                                  child: const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 8.0, horizontal: 35.0),
-                                    child: Text(
-                                      'Answer',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 50.0,
+                            vertical: 10.0,
+                          ),
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                  color: kLightColor,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5.0))),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 35.0),
+                                child: Text(
+                                  'Answer',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
                                   ),
                                 ),
-                              )
-                            ],
+                              ),
+                            ),
                           ),
                         ),
                       ],
                     ),
                   );
                 },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FacultyDrawer extends StatelessWidget {
+  const FacultyDrawer({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      backgroundColor: kDrawerColor,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 25.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            ListTile(
+              title: Text(
+                'Home',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 25.0,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Profile',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 25.0,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Answered Questions',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 25.0,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Logout',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 25.0,
+                ),
               ),
             ),
           ],

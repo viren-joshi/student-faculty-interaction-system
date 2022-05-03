@@ -5,3 +5,4 @@ const kLightColor = Color(0xFFA92348);
 const kGray = Color(0xFFC4C4C4);
 const kButtonColor = Color(0xFF38445E);
 const kHyperlinkColor = Color(0xFF4169E1);
+const kDrawerColor = Color(0xCC680C25);

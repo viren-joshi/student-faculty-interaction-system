@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:somaiya_project/constants.dart';
-import 'package:somaiya_project/widgets/custom_text_field.dart';
-import 'package:somaiya_project/widgets/submit_button.dart';
+import 'package:somaiya_project/screens/student/ask_question_tab.dart';
 
 class StudentHomeScreen extends StatefulWidget {
   const StudentHomeScreen({Key? key}) : super(key: key);
@@ -17,47 +16,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
       child: DefaultTabController(
         length: 2,
         child: Scaffold(
-          drawer: Drawer(
-            backgroundColor: const Color(0xCC680C25),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 25.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  ListTile(
-                    title: Text(
-                      'Home',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 25.0,
-                      ),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Profile',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 25.0,
-                      ),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Logout',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 25.0,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
+          drawer: StudentDrawer(),
           appBar: AppBar(
             backgroundColor: Colors.white,
             iconTheme: const IconThemeData(color: kGray, size: 45.0),
@@ -99,76 +58,52 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
   }
 }
 
-class AskAQuestionTab extends StatefulWidget {
-  const AskAQuestionTab({Key? key}) : super(key: key);
+class StudentDrawer extends StatelessWidget {
+  const StudentDrawer({
+    Key? key,
+  }) : super(key: key);
 
-  @override
-  State<AskAQuestionTab> createState() => _AskAQuestionTabState();
-}
-
-class _AskAQuestionTabState extends State<AskAQuestionTab> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ListView(
-        shrinkWrap: true,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
-                  child: CustomTextField(
-                      hintText: 'Choose Faculty',
-                      onChangedCallback: (String? value) {}),
+    return Drawer(
+      backgroundColor: kDrawerColor,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 25.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            ListTile(
+              title: Text(
+                'Home',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 25.0,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
-                  child: CustomTextField(
-                      hintText: 'Subject',
-                      onChangedCallback: (String? value) {}),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: kGray,
-                      hintText: 'Question',
-                      hintStyle: TextStyle(
-                        color: Colors.black45,
-                      ),
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 10,
-                    onChanged: (String? value) {},
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 10.0),
-                  child: ListTile(
-                    tileColor: kGray,
-                    dense: true,
-                    leading: Icon(Icons.attach_file),
-                    title: Text(
-                      'Attach File Here',
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SubmitButton(onPressesCallback: () {}),
-                )
-              ],
+              ),
             ),
-          ),
-        ],
+            ListTile(
+              title: Text(
+                'Profile',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 25.0,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Logout',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 25.0,
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -195,10 +130,58 @@ class _PreviousQuestionsState extends State<PreviousQuestions> {
           );
         },
         itemBuilder: (BuildContext context, int index) {
-          return const AnsweredQuestionTile();
+          if (index % 2 == 0) {
+            return const AnsweredQuestionTile();
+          } else {
+            return const UnansweredQuestionTile();
+          }
         },
 
         // shrinkWrap: true,
+      ),
+    );
+  }
+}
+
+class UnansweredQuestionTile extends StatelessWidget {
+  const UnansweredQuestionTile({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: const [
+          Text(
+            'Question :',
+            textAlign: TextAlign.justify,
+            style: TextStyle(
+              color: kHyperlinkColor,
+              fontSize: 18.0,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 20.0),
+            child: Text('ABCD EFGH IKLSFJKJEHG HDKJGHRT HKJHJDGJKT KJDGKJRHT'),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              left: 10.0,
+              top: 12.0,
+            ),
+            child: Text(
+              'Staus : Pending ',
+              textAlign: TextAlign.justify,
+              style: TextStyle(
+                color: kDarkColor,
+                fontSize: 15.0,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
