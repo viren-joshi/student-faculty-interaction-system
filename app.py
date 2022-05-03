@@ -85,7 +85,7 @@ def getAllQuestions():
     return response
 
 @app.route('/getAllQuestionsTeacher',methods=['POST'])
-def getAllQuestions():
+def getAllQuestionsTeacher():
     data = request.json
     fac_id = data['fac_id']
     result = db.engine.execute(f'select * from question where fac_id={fac_id} and status=false;')
