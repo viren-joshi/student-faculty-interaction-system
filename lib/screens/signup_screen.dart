@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:somaiya_project/constants.dart';
 import 'package:somaiya_project/screens/login_screen.dart';
+import 'package:somaiya_project/screens/student/student_home_screen.dart';
 import 'package:somaiya_project/widgets/custom_text_field.dart';
 import 'package:somaiya_project/widgets/submit_button.dart';
 
@@ -12,8 +13,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  bool isTeacherSelected = true;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -48,65 +47,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.start,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            height: MediaQuery.of(context).size.height / 4.5,
-                            decoration: BoxDecoration(
-                              color:
-                                  isTeacherSelected ? kDarkColor : kLightColor,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(10.0)),
-                            ),
-                            child: TextButton(
-                              onPressed: () => setState(() {
-                                isTeacherSelected = true;
-                              }),
-                              child: const Center(
-                                child: Text(
-                                  'Teachers',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 20.0,
-                        ),
-                        Expanded(
-                          child: Container(
-                            height: MediaQuery.of(context).size.height / 4.5,
-                            decoration: BoxDecoration(
-                              color:
-                                  isTeacherSelected ? kLightColor : kDarkColor,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(10.0)),
-                            ),
-                            child: TextButton(
-                              onPressed: () => setState(() {
-                                isTeacherSelected = false;
-                              }),
-                              child: const Center(
-                                child: Text(
-                                  'Student',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                  const Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Text(
+                      "For Students Only",
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                   Padding(
@@ -120,6 +68,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: CustomTextField(
                       hintText: 'Somaiya Email',
+                      textInputType: TextInputType.emailAddress,
                       onChangedCallback: (String? val) {},
                     ),
                   ),
@@ -127,6 +76,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: CustomTextField(
                       hintText: 'Phone',
+                      textInputType: TextInputType.number,
                       onChangedCallback: (String? val) {},
                     ),
                   ),
@@ -134,38 +84,52 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: CustomTextField(
                       hintText: 'SVV Net Id',
+                      textInputType: TextInputType.number,
                       onChangedCallback: (String? val) {},
                     ),
                   ),
-                  isTeacherSelected
-                      ? const SizedBox.shrink()
-                      : Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: CustomTextField(
-                                  hintText: 'Dept',
-                                  onChangedCallback: (String? val) {},
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 20.0,
-                              ),
-                              Expanded(
-                                child: CustomTextField(
-                                  hintText: 'Year',
-                                  onChangedCallback: (String? val) {},
-                                ),
-                              ),
-                            ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextField(
+                            hintText: 'Dept',
+                            onChangedCallback: (String? val) {},
                           ),
                         ),
+                        const SizedBox(
+                          width: 20.0,
+                        ),
+                        Expanded(
+                          child: CustomTextField(
+                            hintText: 'Year',
+                            onChangedCallback: (String? val) {},
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: CustomTextField(
+                      hintText: 'Password',
+                      obscureText: true,
+                      onChangedCallback: (String? val) {},
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 10.0, horizontal: 20.0),
                     child: SubmitButton(
-                      onPressesCallback: () {},
+                      onPressesCallback: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const StudentHomeScreen(),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   GestureDetector(
@@ -180,7 +144,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       style: TextStyle(color: kHyperlinkColor),
                       textAlign: TextAlign.center,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

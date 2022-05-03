@@ -17,13 +17,56 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
       child: DefaultTabController(
         length: 2,
         child: Scaffold(
+          drawer: Drawer(
+            backgroundColor: const Color(0xCC680C25),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 25.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  ListTile(
+                    title: Text(
+                      'Home',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 25.0,
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Profile',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 25.0,
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Logout',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 25.0,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
           appBar: AppBar(
             backgroundColor: Colors.white,
-            leading: Padding(
-              padding: const EdgeInsets.only(top: 2.0, left: 5.0),
-              child: Image.asset('images/somaiya_logo.jpg'),
-            ),
+            iconTheme: const IconThemeData(color: kGray, size: 45.0),
             actions: [
+              Padding(
+                padding: const EdgeInsets.only(top: 2.0, left: 5.0),
+                child: Image.asset('images/somaiya_logo.jpg'),
+              ),
+              const SizedBox(width: 5.0),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Image.asset('images/somaiya_trust.jpg'),
@@ -39,15 +82,17 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                   TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400),
               unselectedLabelColor: kLightColor,
               tabs: [
-                Tab(
-                  child: Text('Ask a Question'),
-                ),
+                Tab(text: 'Ask a Question'),
                 Tab(text: 'Previous Question')
               ],
             ),
           ),
           body: const TabBarView(
-              children: [AskAQuestionTab(), Icon(Icons.ac_unit_rounded)]),
+            children: [
+              AskAQuestionTab(),
+              PreviousQuestions(),
+            ],
+          ),
         ),
       ),
     );
@@ -122,6 +167,78 @@ class _AskAQuestionTabState extends State<AskAQuestionTab> {
                 )
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PreviousQuestions extends StatefulWidget {
+  const PreviousQuestions({Key? key}) : super(key: key);
+
+  @override
+  State<PreviousQuestions> createState() => _PreviousQuestionsState();
+}
+
+class _PreviousQuestionsState extends State<PreviousQuestions> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: ListView.separated(
+        itemCount: 10,
+        separatorBuilder: (BuildContext context, int index) {
+          return const Divider(
+            thickness: 2.0,
+            color: Color(0xFF082795),
+          );
+        },
+        itemBuilder: (BuildContext context, int index) {
+          return const AnsweredQuestionTile();
+        },
+
+        // shrinkWrap: true,
+      ),
+    );
+  }
+}
+
+class AnsweredQuestionTile extends StatelessWidget {
+  const AnsweredQuestionTile({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: const [
+          Text(
+            'Question :',
+            textAlign: TextAlign.justify,
+            style: TextStyle(
+              color: kHyperlinkColor,
+              fontSize: 18.0,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 20.0),
+            child: Text('ABCD EFGH IKLSFJKJEHG HDKJGHRT HKJHJDGJKT KJDGKJRHT'),
+          ),
+          Text(
+            'Answer:',
+            textAlign: TextAlign.justify,
+            style: TextStyle(
+              color: kHyperlinkColor,
+              fontSize: 18.0,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 20.0),
+            child: Text('JSKFHEKJFHEJAHDFKJ'),
           ),
         ],
       ),

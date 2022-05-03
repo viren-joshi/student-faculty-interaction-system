@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:somaiya_project/constants.dart';
+import 'package:somaiya_project/screens/faculty/faculty_home_screen.dart';
+import 'package:somaiya_project/screens/signup_screen.dart';
 import 'package:somaiya_project/screens/student/student_home_screen.dart';
 import 'package:somaiya_project/widgets/custom_text_field.dart';
 import 'package:somaiya_project/widgets/submit_button.dart';
@@ -13,6 +15,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   String email = '';
+  bool isTeacherSelected = true;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +40,65 @@ class _LoginScreenState extends State<LoginScreen> {
           child: ListView(
             shrinkWrap: true,
             children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: MediaQuery.of(context).size.height / 4.5,
+                        decoration: BoxDecoration(
+                          color: isTeacherSelected ? kDarkColor : kLightColor,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: TextButton(
+                          onPressed: () => setState(() {
+                            isTeacherSelected = true;
+                          }),
+                          child: const Center(
+                            child: Text(
+                              'Teachers',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20.0,
+                    ),
+                    Expanded(
+                      child: Container(
+                        height: MediaQuery.of(context).size.height / 4.5,
+                        decoration: BoxDecoration(
+                          color: isTeacherSelected ? kLightColor : kDarkColor,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: TextButton(
+                          onPressed: () => setState(() {
+                            isTeacherSelected = false;
+                          }),
+                          child: const Center(
+                            child: Text(
+                              'Student',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Column(
@@ -77,14 +139,40 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 20.0),
                       child: SubmitButton(onPressesCallback: () {
+                        if (isTeacherSelected) {
+                          //Login With Teacher
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const FacultyHomeScreen(),
+                            ),
+                          );
+                        } else {
+                          //Login With Student
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const StudentHomeScreen(),
+                            ),
+                          );
+                        }
+                      }),
+                    ),
+                    GestureDetector(
+                      onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const StudentHomeScreen(),
+                            builder: (context) => const SignUpScreen(),
                           ),
                         );
-                      }),
-                    ),
+                      },
+                      child: const Text(
+                        "Don't have an Account ? Tap Here !",
+                        style: TextStyle(color: kHyperlinkColor),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
                   ],
                 ),
               )
