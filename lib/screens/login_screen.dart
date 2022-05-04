@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:somaiya_project/constants.dart';
 import 'package:somaiya_project/screens/faculty/faculty_home_screen.dart';
 import 'package:somaiya_project/screens/signup_screen.dart';
 import 'package:somaiya_project/screens/student/student_home_screen.dart';
+import 'package:somaiya_project/utilities/network_helper.dart';
 import 'package:somaiya_project/widgets/custom_text_field.dart';
 import 'package:somaiya_project/widgets/submit_button.dart';
 
@@ -138,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 20.0),
-                      child: SubmitButton(onPressesCallback: () {
+                      child: SubmitButton(onPressesCallback: () async {
                         if (isTeacherSelected) {
                           //Login With Teacher
                           Navigator.push(
@@ -149,6 +151,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         } else {
                           //Login With Student
+                          var response = await NetworkHelper.loginAsStudent(
+                              'viren@mail.com', 'password');
+                          if (kDebugMode) {
+                            print(response);
+                          }
                           Navigator.push(
                             context,
                             MaterialPageRoute(

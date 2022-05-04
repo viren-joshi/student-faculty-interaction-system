@@ -2,19 +2,20 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-const String domain = '';
+const String domain = 'http://127.0.0.1:5000';
 
 class NetworkHelper {
   static Future<Map> loginAsStudent(String email, String password) async {
     Uri url = Uri.parse('$domain/login');
     var response = await http.post(
       url,
-      body: {
+      body: jsonEncode({
         'email': email,
         'password': password,
-      },
+      }),
       headers: {'Content-Type': 'application/json'},
     );
+    print(response.statusCode);
     if (response.statusCode == 200) {
       Map decoded = jsonDecode(response.body) as Map;
       return decoded;
