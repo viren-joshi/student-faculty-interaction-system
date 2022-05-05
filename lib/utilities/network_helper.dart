@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-const String domain = 'http://127.0.0.1:5000';
+const String domain = 'http://10.0.2.2:5000';
 
 class NetworkHelper {
   static Future<Map> loginAsStudent(String email, String password) async {
+    print('here');
     Uri url = Uri.parse('$domain/login');
     var response = await http.post(
       url,
@@ -15,7 +17,10 @@ class NetworkHelper {
       }),
       headers: {'Content-Type': 'application/json'},
     );
-    print(response.statusCode);
+    if (kDebugMode) {
+      print(response.statusCode);
+      print(response.body);
+    }
     if (response.statusCode == 200) {
       Map decoded = jsonDecode(response.body) as Map;
       return decoded;

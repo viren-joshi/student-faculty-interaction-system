@@ -13,7 +13,7 @@ class _FacultyHomeScreenState extends State<FacultyHomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        drawer: FacultyDrawer(),
+        drawer: const FacultyDrawer(),
         appBar: AppBar(
           backgroundColor: Colors.white,
           iconTheme: const IconThemeData(color: kGray, size: 45.0),

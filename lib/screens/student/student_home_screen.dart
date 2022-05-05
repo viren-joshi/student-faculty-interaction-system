@@ -16,7 +16,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
       child: DefaultTabController(
         length: 2,
         child: Scaffold(
-          drawer: StudentDrawer(),
+          drawer: const StudentDrawer(),
           appBar: AppBar(
             backgroundColor: Colors.white,
             iconTheme: const IconThemeData(color: kGray, size: 45.0),

@@ -11,11 +11,15 @@ app = Flask(__name__)
 db = SQLAlchemy(app)
 
 app.config['SQLACLHEMY_TRACK_MODIFICATIONS']=False
+# app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:password@localhost:3308/student_manage'
 app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:divija123@localhost/student_manage'
 
 
 # TODO : create Endpoint for get all teachers - 
 #           it should return teacher ID and Teacher Name (ID is important)
+
+# TODO : create a login for teachers - 
+#           the current login only sees the students table and not the teachers table
 
 # TODO : Do this in ALL APIs,
 #           if the process (whatever it is) is successful return a dict {'message' : 'Success'} 'MAZZA AA GAYA' bhi chalega tbh
