@@ -32,8 +32,8 @@ class NetworkHelper {
   static Future<Map> signUpAsStudent(
     String name,
     String email,
-    int phone,
-    int svv,
+    String phone,
+    String svv,
     String year,
     String dept,
     String password,
