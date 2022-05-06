@@ -175,14 +175,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                             } else {
                               //Login With Student
-                              var response = await NetworkHelper.loginAsStudent(
-                                  email, password);
+                              // var response = await NetworkHelper.loginAsStudent(
+                              //     email, password);
                               setState(() {
                                 isSpinning = false;
                               });
-                              if (kDebugMode) {
-                                print(response);
-                              }
+                              // if (kDebugMode) {
+                              //   print(response);
+                              // }
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
