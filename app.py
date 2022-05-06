@@ -63,15 +63,11 @@ def postQuestion():
     data = request.json
     question = data['question']
     stu_id = data['stu_id']
+    fac_id = data['faculty_id']
     topic = data['topic']
     date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    faculty_name=data['faculty_name']    
-    fac_id=(db.engine.execute(f'select dept_id from faculty where fac_name="{faculty_name}"'))
-    for i in fac_id:
-        fac_id = (i[0])
-        break
     db.engine.execute(f'insert into question(question,fac_id,stu_id,date,topic) VALUES ("{question}",{fac_id},{stu_id},"{date}","{topic}")')
-    return "EXECUTED"
+    return "Executed"
 
 # TODO : In API above take faculty id as input, remove the faculty name part.
 
@@ -109,6 +105,32 @@ def postAnswer():
     db.engine.execute(f'update question set status=true where quest_id={quest_id};')
     return "MAZA AA GAYA"
 
+@app.route('/teacherLogin',methods=['POST'])
+def login():
+    data=request.json
+    email=data['email']
+    password=data['password']
+    check=db.engine.execute(f'select fac_id from faculty where fac_email="{email}" and fac_pass="{password}";')
+    l=0
+    for i in check:
+        l+=1
+        loggedin_id=i[0]
+    if l>0:
+        return str(loggedin_id)
+    else:
+        return "False"    
+
+@app.route('/getAllTeachers',methods=['POST'])
+def getAllTeachers():
+    data = request.json
+    result = db.engine.execute(f'select fac_id, fac_name from faculty;')
+    response = {}
+    i=1
+    for each in result:
+        response.update({f'{i}.': list(each)})
+        i+=1
+    return response        
+# msg is successful or error key - value
 
 if __name__ == '__main__':
     app.run()
