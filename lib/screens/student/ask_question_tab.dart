@@ -74,17 +74,19 @@ class _AskAQuestionTabState extends State<AskAQuestionTab> {
                   // ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: SubmitButton(onPressesCallback: () async {
-                      setState(() {
-                        isSpinning = true;
-                      });
-                      // var response = await NetworkHelper.postQuestion(question, sID, subject, fID);
-                      setState(() {
-                        isSpinning = false;
-                      });
+                    child: SubmitButton(
+                      onPressesCallback: () async {
+                        setState(() {
+                          isSpinning = true;
+                        });
+                        // var response = await NetworkHelper.postQuestion(question, sID, subject, fID);
+                        setState(() {
+                          isSpinning = false;
+                        });
 
-                      showNormalSnackbar(context, 'Posted Successfully');
-                    }),
+                        showNormalSnackbar(context, 'Posted Successfully');
+                      },
+                    ),
                   )
                 ],
               ),
