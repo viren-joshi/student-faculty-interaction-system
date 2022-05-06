@@ -1,5 +1,6 @@
 # IMPORT REQUIRED LIBRARIES
 from unicodedata import name
+from urllib import response
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -11,8 +12,8 @@ app = Flask(__name__)
 db = SQLAlchemy(app)
 
 app.config['SQLACLHEMY_TRACK_MODIFICATIONS']=False
-# app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:password@localhost:3308/student_manage'
-app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:divija123@localhost/student_manage'
+app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:password@localhost:3308/student_manage'
+# app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:divija123@localhost/student_manage'
 
 
 # TODO : create Endpoint for get all teachers - 
@@ -50,11 +51,15 @@ def login():
     password=data['password']
     check=db.engine.execute(f'select st_id from students_details where st_email="{email}" and st_pass="{password}";')
     l=0
+    response = {}
     for i in check:
         l+=1
         loggedin_id=i[0]
     if l>0:
-        return str(loggedin_id)
+        response['stu_id'] = str(loggedin_id)
+        response['message'] = 'Success'
+        
+        return response
     else:
         return "False"
 
@@ -94,6 +99,10 @@ def getAllQuestionsTeacher():
     for each in result:
         response.update({f'{i}.': list(each)})
         i+=1
+    if response :
+        response['message'] = 'Success'
+    else :
+        response['message'] = 'Error'
     return response
 
 @app.route('/postAnswer',methods=['POST'])
@@ -106,7 +115,7 @@ def postAnswer():
     return "MAZA AA GAYA"
 
 @app.route('/teacherLogin',methods=['POST'])
-def login():
+def teacherLogin():
     data=request.json
     email=data['email']
     password=data['password']
