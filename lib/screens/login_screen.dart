@@ -6,6 +6,7 @@ import 'package:somaiya_project/screens/faculty/faculty_home_screen.dart';
 import 'package:somaiya_project/screens/signup_screen.dart';
 import 'package:somaiya_project/screens/student/student_home_screen.dart';
 import 'package:somaiya_project/utilities/network_helper.dart';
+import 'package:somaiya_project/utilities/shared_pref_manager.dart';
 import 'package:somaiya_project/widgets/custom_snackbar.dart';
 import 'package:somaiya_project/widgets/custom_text_field.dart';
 import 'package:somaiya_project/widgets/submit_button.dart';
@@ -133,27 +134,28 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: CustomTextField(
                             hintText: 'Password',
+                            obscureText: true,
                             onChangedCallback: (String? val) {
                               if (val != null) {
                                 password = val;
                               }
                             }),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5.0, horizontal: 10.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            showErrorSnackbar(
-                                context, 'Sorry, something went wrong :(');
-                          },
-                          child: const Text(
-                            'Forgot Password',
-                            textAlign: TextAlign.right,
-                            style: TextStyle(color: kHyperlinkColor),
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(
+                      //       vertical: 5.0, horizontal: 10.0),
+                      //   child: GestureDetector(
+                      //     onTap: () {
+                      //       showErrorSnackbar(
+                      //           context, 'Sorry, something went wrong :(');
+                      //     },
+                      //     child: const Text(
+                      //       'Forgot Password',
+                      //       textAlign: TextAlign.right,
+                      //       style: TextStyle(color: kHyperlinkColor),
+                      //     ),
+                      //   ),
+                      // ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 20.0),
@@ -164,51 +166,69 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                             if (isTeacherSelected) {
                               //Login With Teacher
+                              var response = await NetworkHelper.loginAsTeacher(
+                                  email, password);
                               setState(() {
                                 isSpinning = false;
                               });
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const FacultyHomeScreen(),
-                                ),
-                              );
+                              if (response['message'] == 'Success') {
+                                int id = int.parse(response['teach_id']);
+                                SharedPrefManager.login(id);
+                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const FacultyHomeScreen(),
+                                  ),
+                                );
+                              } else {
+                                showErrorSnackbar(
+                                    context, 'Faculty Login Failed :(');
+                              }
                             } else {
                               //Login With Student
-                              // var response = await NetworkHelper.loginAsStudent(
-                              //     email, password);
+                              print(email + " " + password);
+                              var response = await NetworkHelper.loginAsStudent(
+                                  email, password);
                               setState(() {
                                 isSpinning = false;
                               });
-                              // if (kDebugMode) {
-                              //   print(response);
-                              // }
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const StudentHomeScreen(),
-                                ),
-                              );
+                              if (response['message'] == 'Success') {
+                                int id = int.parse(response['stu_id']);
+                                SharedPrefManager.login(id);
+                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const StudentHomeScreen(),
+                                  ),
+                                );
+                              } else {
+                                showErrorSnackbar(
+                                    context, 'Student Login Failed :(');
+                              }
                             }
                           },
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SignUpScreen(),
-                            ),
-                          );
-                        },
-                        child: const Text(
-                          "Don't have an Account ? Tap Here !",
-                          style: TextStyle(color: kHyperlinkColor),
-                          textAlign: TextAlign.center,
-                        ),
-                      )
+                      isTeacherSelected
+                          ? const SizedBox.shrink()
+                          : GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SignUpScreen(),
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                "Don't have an Account ? Tap Here !",
+                                style: TextStyle(color: kHyperlinkColor),
+                                textAlign: TextAlign.center,
+                              ),
+                            )
                     ],
                   ),
                 )

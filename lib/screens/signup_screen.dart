@@ -2,7 +2,6 @@ import 'package:blurry_modal_progress_hud/blurry_modal_progress_hud.dart';
 import 'package:flutter/material.dart';
 import 'package:somaiya_project/constants.dart';
 import 'package:somaiya_project/screens/login_screen.dart';
-import 'package:somaiya_project/screens/student/student_home_screen.dart';
 import 'package:somaiya_project/utilities/network_helper.dart';
 import 'package:somaiya_project/widgets/custom_snackbar.dart';
 import 'package:somaiya_project/widgets/custom_text_field.dart';
@@ -194,17 +193,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             setState(() {
                               isSpinning = true;
                             });
-                            // var response = await NetworkHelper.signUpAsStudent(name, email, phone, svv, year, dept, password);
+                            var response = await NetworkHelper.signUpAsStudent(name: name,email: email,phone: phone,svv: svvID,year: selectedYear,dept: deptID[selectedDept].toString(),password: password);
                             setState(() {
                               isSpinning = false;
                             });
+                            if (response['message'] == 'Success'){
+                              Navigator.pop(context);
+                              showNormalSnackbar(context, 'Kindly Login Again With Email & Password');
+                            } else {
+                              showErrorSnackbar(context, 'An Error Occurred :(');
+                            }
                           }
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const StudentHomeScreen(),
-                            ),
-                          );
                         },
                       ),
                     ),

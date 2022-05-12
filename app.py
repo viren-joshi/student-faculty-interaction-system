@@ -68,7 +68,7 @@ def login():
     if l>0:
         return {
             "message":"Success",
-            "login_id":str(loggedin_id)
+            "stu_id":str(loggedin_id)
             }
     else:
         return fail_dict
