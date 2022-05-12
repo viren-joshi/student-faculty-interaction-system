@@ -4,8 +4,26 @@ import 'package:somaiya_project/constants.dart';
 import 'package:somaiya_project/screens/login_screen.dart';
 import 'package:somaiya_project/screens/student/student_home_screen.dart';
 import 'package:somaiya_project/utilities/network_helper.dart';
+import 'package:somaiya_project/widgets/custom_snackbar.dart';
 import 'package:somaiya_project/widgets/custom_text_field.dart';
 import 'package:somaiya_project/widgets/submit_button.dart';
+
+enum Dept {
+  none,
+  comps,
+  it,
+  extc,
+  etrx,
+  aids,
+}
+
+Map<Dept, int> deptID = {
+  Dept.comps: 1,
+  Dept.it: 2,
+  Dept.aids: 3,
+  Dept.extc: 4,
+  Dept.etrx: 5,
+};
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -16,6 +34,9 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   bool isSpinning = false;
+  Dept selectedDept = Dept.none;
+  String selectedYear = 'Year';
+  String name = '', email = '', phone = '', svvID = '', password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +88,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: CustomTextField(
                         hintText: 'Full Name',
-                        onChangedCallback: (String? val) {},
+                        onChangedCallback: (String? val) {
+                          if (val != null) {
+                            name = val;
+                          }
+                        },
                       ),
                     ),
                     Padding(
@@ -75,7 +100,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: CustomTextField(
                         hintText: 'Somaiya Email',
                         textInputType: TextInputType.emailAddress,
-                        onChangedCallback: (String? val) {},
+                        onChangedCallback: (String? val) {
+                          if (val != null) {
+                            email = val;
+                          }
+                        },
                       ),
                     ),
                     Padding(
@@ -83,7 +112,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: CustomTextField(
                         hintText: 'Phone',
                         textInputType: TextInputType.number,
-                        onChangedCallback: (String? val) {},
+                        onChangedCallback: (String? val) {
+                          if (val != null) {
+                            phone = val;
+                          }
+                        },
                       ),
                     ),
                     Padding(
@@ -91,7 +124,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: CustomTextField(
                         hintText: 'SVV Net Id',
                         textInputType: TextInputType.number,
-                        onChangedCallback: (String? val) {},
+                        onChangedCallback: (String? val) {
+                          if (val != null) {
+                            svvID = val;
+                          }
+                        },
                       ),
                     ),
                     Padding(
@@ -99,20 +136,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: Row(
                         children: [
                           Expanded(
-                            child: CustomTextField(
-                              hintText: 'Dept',
-                              onChangedCallback: (String? val) {},
+                            child: DeptDropDown(
+                              value: selectedDept,
+                              onChanged: (Dept? value) {
+                                if (value != null) {
+                                  setState(() {
+                                    selectedDept = value;
+                                  });
+                                }
+                              },
                             ),
                           ),
                           const SizedBox(
                             width: 20.0,
                           ),
                           Expanded(
-                            child: CustomTextField(
-                              hintText: 'Year',
-                              onChangedCallback: (String? val) {},
-                            ),
-                          ),
+                              child: YearDropDown(
+                            value: selectedYear,
+                            onChanged: (String? value) {
+                              if (value != null) {
+                                setState(() {
+                                  selectedYear = value;
+                                });
+                              }
+                            },
+                          )),
                         ],
                       ),
                     ),
@@ -121,7 +169,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: CustomTextField(
                         hintText: 'Password',
                         obscureText: true,
-                        onChangedCallback: (String? val) {},
+                        onChangedCallback: (String? val) {
+                          if (val != null) {
+                            password = val;
+                          }
+                        },
                       ),
                     ),
                     Padding(
@@ -129,14 +181,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           vertical: 10.0, horizontal: 20.0),
                       child: SubmitButton(
                         onPressesCallback: () async {
-                          setState(() {
-                            isSpinning = true;
-                          });
-                          // var response = await NetworkHelper.signUpAsStudent(name, email, phone, svv, year, dept, password);
-                          setState(() {
-                            isSpinning = false;
-                          });
-
+                          if (name == '' ||
+                              email == '' ||
+                              phone == '' ||
+                              svvID == '' ||
+                              password == '' ||
+                              selectedDept == Dept.none ||
+                              selectedYear == 'Year') {
+                            showErrorSnackbar(context,
+                                'None of the given fields should be empty !');
+                          } else {
+                            setState(() {
+                              isSpinning = true;
+                            });
+                            // var response = await NetworkHelper.signUpAsStudent(name, email, phone, svv, year, dept, password);
+                            setState(() {
+                              isSpinning = false;
+                            });
+                          }
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -167,5 +229,99 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     ));
+  }
+}
+
+class DeptDropDown extends StatelessWidget {
+  final Dept value;
+  final Function(Dept?) onChanged;
+
+  const DeptDropDown({Key? key, required this.value, required this.onChanged})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+          color: kGray, borderRadius: BorderRadius.all(Radius.circular(5.0))),
+      child: Center(
+        child: DropdownButton<Dept>(
+          hint: const Text('Dept'),
+          value: value,
+          items: const [
+            DropdownMenuItem(
+              child: Text('Department'),
+              value: Dept.none,
+            ),
+            DropdownMenuItem(
+              child: Text('COMPS'),
+              value: Dept.comps,
+            ),
+            DropdownMenuItem(
+              child: Text('IT'),
+              value: Dept.it,
+            ),
+            DropdownMenuItem(
+              child: Text('EXTC'),
+              value: Dept.extc,
+            ),
+            DropdownMenuItem(
+              child: Text('ETRX'),
+              value: Dept.etrx,
+            ),
+            DropdownMenuItem(
+              child: Text('AI-DS'),
+              value: Dept.aids,
+            ),
+          ],
+          onChanged: onChanged,
+        ),
+      ),
+    );
+  }
+}
+
+class YearDropDown extends StatelessWidget {
+  final String value;
+  final Function(String?) onChanged;
+
+  const YearDropDown({Key? key, required this.value, required this.onChanged})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+          color: kGray, borderRadius: BorderRadius.all(Radius.circular(5.0))),
+      child: Center(
+        child: DropdownButton<String>(
+          hint: const Text('Dept'),
+          value: value,
+          items: const [
+            DropdownMenuItem(
+              child: Text('Year'),
+              value: "Year",
+            ),
+            DropdownMenuItem(
+              child: Text('FY'),
+              value: 'FY',
+            ),
+            DropdownMenuItem(
+              child: Text('SY'),
+              value: 'SY',
+            ),
+            DropdownMenuItem(
+              child: Text('TY'),
+              value: 'TY',
+            ),
+            DropdownMenuItem(
+              child: Text('LY'),
+              value: 'LY',
+            ),
+          ],
+          onChanged: onChanged,
+        ),
+      ),
+    );
   }
 }
