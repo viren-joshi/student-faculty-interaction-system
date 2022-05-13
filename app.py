@@ -80,35 +80,32 @@ def postQuestion():
     stu_id = data['stu_id']
     topic = data['topic']
     date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    fac_id=data['fac_id']    
+    fac_id=data['faculty_id']
     try:
         db.engine.execute(f'insert into question(question,fac_id,stu_id,date,topic) VALUES ("{question}",{fac_id},{stu_id},"{date}","{topic}")')
     except:
         return fail_dict
     return success_dict
 
-# TODO : In API above take faculty id as input, remove the faculty name part.
-
 
 @app.route('/getAllQuestions',methods=['POST'])
 def getAllQuestions():
     data = request.json
     stu_id = data['stu_id']
-    #SELECT question.*, answer.answer_id,answer.answer FROM question LEFT JOIN answer ON question.quest_id = answer.quest_id WHERE question.stu_id = 1;
     try:
         result = db.engine.execute(f'select question.*, answer.answer_id,answer.answer from question LEFT OUTER JOIN answer on question.quest_id = answer.quest_id where stu_id = {stu_id};')
     except:
         return fail_dict
     response = {}
-    response["message"] = "Success"
-    if not result :
-        response["isThere"] = "No Questions"
-    else :
-        i=1
-        for each in result:
-            response.update({f'{i}': dict(zip(result.keys(),each))})
-            i+=1
+    i=1
+    for each in result:
+        response.update({f'{i}': dict(zip(result.keys(),each))})
+        i+=1
+    if response :
         response['isThere'] = "Yes"
+    else :
+        response['isThere'] = "No"
+    response["message"] = "Success"
     return response
 
 @app.route('/getAllQuestionsTeacher',methods=['POST'])
@@ -125,9 +122,9 @@ def getAllQuestionsTeacher():
         response.update({f'{i}': dict(zip(result.keys(),each))})
         i+=1
     if response :
-        response['isThere'] = "No Questions"
-    else :
         response['isThere'] = "Yes"
+    else :
+        response['isThere'] = "No"
     response['message'] = 'Success'
     return response
 
@@ -162,7 +159,7 @@ def teacherLogin():
         response["teach_id"] = str(loggedin_id)
         return response
     else:
-        return fail_dict   
+        return fail_dict
 
 @app.route('/getAllTeachers',methods=['POST'])
 def getAllTeachers():
@@ -173,12 +170,13 @@ def getAllTeachers():
     except:
         return fail_dict
     response = {}
+    response['message'] = 'Success'
     i=1
     for each in result:
         response.update({f'{i}': dict(zip(result.keys(),each))})
         i+=1
-    return response        
-# msg is successful or error key - value
+    return response
+
 
 if __name__ == '__main__':
     app.run()
