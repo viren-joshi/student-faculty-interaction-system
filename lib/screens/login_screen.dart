@@ -174,6 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               if (response['message'] == 'Success') {
                                 int id = int.parse(response['teach_id']);
                                 SharedPrefManager.login(id);
+                                SharedPrefManager.loggedInAsStudent(false);
                                 Navigator.pop(context);
                                 Navigator.push(
                                   context,
@@ -196,6 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               if (response['message'] == 'Success') {
                                 int id = int.parse(response['stu_id']);
                                 SharedPrefManager.login(id);
+                                SharedPrefManager.loggedInAsStudent(true);
                                 Navigator.pop(context);
                                 Navigator.push(
                                   context,

@@ -23,4 +23,14 @@ class SharedPrefManager{
     return sharedPreferences.getInt('ID') ?? -1;
   }
 
+  static void loggedInAsStudent(bool b) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool('LoggedInAsStudent', b);
+  }
+
+  static Future<bool> isLoggedInAsStudent() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getBool('LoggedInAsStudent') ?? true ;
+  }
+
 }
